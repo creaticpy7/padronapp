@@ -95,6 +95,8 @@
         Papa.parse('padronapp.csv', {
             download: true,
             header: true,
+            delimiter: ";",
+            encoding: "ISO-8859-1",
             skipEmptyLines: true,
             complete: function(results) {
                 window.csvData = results.data;
