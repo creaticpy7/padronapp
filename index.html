@@ -27,19 +27,11 @@
 
         .btn-row { display: flex; justify-content: space-between; margin-top: 25px; gap: 15px; flex-wrap: wrap; }
         .btn-orange { background-color: #ff8c33; color: white; border: none; padding: 14px; border-radius: 30px; font-size: 20px; cursor: pointer; flex: 1; min-width: 120px; text-align: center; text-decoration: none; }
-        .btn-gray { background-color: #888; color: white; border: none; padding: 10px; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; width: 150px; margin: 10px auto; text-transform: uppercase; }
+        
 
         #loading-overlay { display: none; color: #d10000; font-weight: bold; margin: 15px 0; font-size: 18px; }
 
-        /* Password Modal */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center; }
-        .modal-content { background-color: white; padding: 25px; border-radius: 12px; text-align: center; width: 300px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
-        .modal-content h3 { margin-top: 0; font-size: 18px; }
-        .modal-content input { width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; text-align: center; font-size: 16px; }
-        .modal-btns { display: flex; gap: 10px; }
-        .modal-btns button { flex: 1; padding: 10px; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; }
-        .btn-modal-ok { background-color: #d10000; color: white; }
-        .btn-modal-cancel { background-color: #666; color: white; }
+        
     </style>
 </head>
 <body>
@@ -66,20 +58,6 @@
             <button class="btn-orange" id="aceptar">Aceptar</button>
             <button class="btn-orange" id="limpiar">Limpiar</button>
             <button class="btn-orange" id="salir">Salir</button>
-        </div>
-        
-        <button class="btn-gray" id="sigece-btn">SIGECE</button>
-    </div>
-
-    <!-- Password Modal -->
-    <div id="pw-modal" class="modal">
-        <div class="modal-content">
-            <h3>Contraseña</h3>
-            <input type="password" id="pw-input" placeholder="Ingrese contraseña">
-            <div class="modal-btns">
-                <button class="btn-modal-ok" id="pw-ok">Aceptar</button>
-                <button class="btn-modal-cancel" id="pw-cancel">Cancelar</button>
-            </div>
         </div>
     </div>
 
@@ -153,38 +131,6 @@
             if (confirm('¿Está seguro de que desea salir del sistema?')) {
                 window.close();
                 setTimeout(() => alert('Si la pestaña no se cerró automáticamente, por favor ciérrela manualmente.'), 500);
-            }
-        });
-
-        // Password Modal Logic
-        const pwModal = document.getElementById('pw-modal');
-        const pwInput = document.getElementById('pw-input');
-
-        document.getElementById('sigece-btn').addEventListener('click', () => {
-            pwModal.style.display = 'flex';
-            pwInput.value = '';
-            pwInput.focus();
-        });
-
-        document.getElementById('pw-cancel').addEventListener('click', () => {
-            pwModal.style.display = 'none';
-        });
-
-        document.getElementById('pw-ok').addEventListener('click', () => {
-            const pass = pwInput.value.trim().toUpperCase();
-            if (pass === 'PADRONAPP') {
-                window.location.href = 'index1.html';
-            } else {
-                alert('Contraseña incorrecta.');
-                pwInput.value = '';
-                pwInput.focus();
-            }
-        });
-
-        // Allow Enter key in password field
-        pwInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                document.getElementById('pw-ok').click();
             }
         });
     </script>
