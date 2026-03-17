@@ -1,0 +1,20 @@
+{
+  "name": "PADRONAPP - Padrón ANR 2026",
+  "short_name": "PADRONAPP",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#d10000",
+  "icons": [
+    {
+      "src": "logopad.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logopad.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
