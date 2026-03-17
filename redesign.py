@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PADRONAPP - Padrón ANR 2026</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    
+import re
+
+with open('index.html', 'r') as f:
+    content = f.read()
+
+# Replace <style> section
+new_style = """
     <style>
         :root {
             --primary-red: #ED1C24;
@@ -154,15 +153,11 @@
             max-width: 500px;
         }
     </style>
+"""
+content = re.sub(r'<style>.*?</style>', new_style, content, flags=re.DOTALL)
 
-
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="PadronApp">
-    <link rel="apple-touch-icon" href="padronapp.png">
-</head>
-
+# Update Body structure
+new_body = """
 <body>
     <div class="container">
         <img src="padronapp.png" alt="logo" class="logo">
@@ -206,9 +201,11 @@
             <button class="btn-close" id="cerrar-modal">CERRAR</button>
         </div>
     </div>
+"""
+content = re.sub(r'<body>.*?<script>', new_body + '\n    <script>', content, flags=re.DOTALL)
 
-    <script>
-
+# Update Script Logic
+new_script_logic = """
         window.csvData = [];
         let isLoaded = false;
 
@@ -292,17 +289,8 @@
         modal.addEventListener('click', (e) => {
             if (e.target === modal) modal.style.display = 'none';
         });
+"""
+content = re.sub(r'<script>\s*window\.csvData = \[\];.*?<\/script>', '<script>\n' + new_script_logic + '\n    </script>', content, flags=re.DOTALL)
 
-    </script>
-
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then((reg) => console.log('Service Worker registrado', reg))
-                    .catch((err) => console.error('Error al registrar Service Worker', err));
-            });
-        }
-    </script>
-</body>
-</html>
+with open('index.html', 'w') as f:
+    f.write(content)
