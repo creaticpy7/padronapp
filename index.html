@@ -3,40 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <title>PADRONAPP - Padrón ANR 2026</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+
     <style>
-        body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; background-color: #ffffff; color: #000; }
-        .container { width: 100%; max-width: 800px; text-align: center; }
+        :root {
+            --primary-red: #d10000;
+            --primary-orange: #ff8c33;
+            --bg-gray: #f4f7f6;
+            --text-dark: #1a1a1a;
+            --text-muted: #6b7280;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        .logo { width: 270px; margin-bottom: 20px; }
-        .divider { width: 100%; height: 2px; background-color: #eee; margin: 10px 0 20px 0; }
-        .red-banner { background-color: #d10000; color: white; padding: 18px; font-size: 22px; font-weight: bold; margin-bottom: 10px; border-radius: 4px; text-align: center; }
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 15px;
+            background-color: var(--bg-gray);
+            color: var(--text-dark);
+            margin: 0;
+            min-height: 100vh;
+        }
 
-        .grid-row-2 { display: flex; gap: 20px; margin-bottom: 15px; }
-        .grid-row-3 { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; text-align: center; }
+        .container { width: 100%; max-width: 500px; text-align: center; }
 
-        .result-item { flex: 1; text-align: left; }
-        .result-label { font-size: 11px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 4px; }
-        .result-value { font-size: 16px; font-weight: 500; color: #000; }
+        .logo { width: 270px; margin-bottom: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); }
 
-        .grid-col { flex: 1; padding: 10px 5px; background-color: #f8f9fa; border-radius: 4px; }
-        .grid-label { font-size: 10px; font-weight: bold; color: #666; text-transform: uppercase; }
-        .grid-value { font-size: 14px; font-weight: 500; color: #d10000; margin-top: 5px; }
+        .red-banner {
+            background-color: var(--primary-red);
+            color: white;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+        }
 
-        .result-full { width: 100%; border-bottom: 1px solid #eee; padding: 12px 0; margin-bottom: 10px; }
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 24px;
+            text-align: left;
+        }
 
-        .form-group { text-align: left; margin-bottom: 15px; width: 100%; }
-        label { font-weight: bold; font-size: 14px; margin-bottom: 8px; display: block; }
-        input#cedula { width: 100%; padding: 12px; border: 1px solid #c0d0e0; background-color: #f0f7ff; border-radius: 4px; box-sizing: border-box; font-size: 18px; }
+        .form-group { margin-bottom: 20px; }
+        label { font-weight: 600; font-size: 14px; margin-bottom: 8px; display: block; color: var(--text-muted); }
+        input#cedula {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            background-color: #f9fafb;
+            border-radius: 12px;
+            font-size: 18px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        input#cedula:focus {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 4px rgba(255, 140, 51, 0.1);
+            background-color: white;
+        }
 
-        .btn-row { display: flex; justify-content: space-between; margin-top: 25px; gap: 15px; flex-wrap: wrap; }
-        .btn-orange { background-color: #ff8c33; color: white; border: none; padding: 14px; border-radius: 30px; font-size: 20px; cursor: pointer; flex: 1; min-width: 120px; text-align: center; text-decoration: none; }
+        .btn-row { display: flex; gap: 12px; margin-top: 8px; }
+        .btn {
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            border: none;
+            transition: transform 0.1s, opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn-orange { background-color: var(--primary-orange); color: white; }
+        .btn-outline { background-color: transparent; border: 2px solid #e5e7eb; color: var(--text-muted); }
 
-        #loading-overlay { display: none; color: #d10000; font-weight: bold; margin: 15px 0; font-size: 18px; }
-.candidate-info { margin: 25px 0; font-size: 16px; color: #000; font-weight: 500; line-height: 1.6; }
-        .footer-text { margin-top: 30px; font-size: 11px; color: #555; }
+        #result-container { display: none; }
+
+        .result-full { border-bottom: 1px solid #f3f4f6; padding: 16px 0; }
+        .result-full:last-child { border-bottom: none; }
+        .result-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .result-value { font-size: 16px; font-weight: 600; color: var(--text-dark); }
+
+        .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+        .grid-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 16px; }
+
+        .grid-col { padding: 12px; background-color: #f9fafb; border-radius: 10px; text-align: center; }
+        .grid-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .grid-value { font-size: 14px; font-weight: 700; color: var(--primary-red); margin-top: 4px; }
+
+        .candidate-info {
+            background-color: #fff9f5;
+            border: 1px dashed var(--primary-orange);
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #4b5563;
+            font-weight: 500;
+            line-height: 1.6;
+            margin: 32px 0;
+        }
+
+        .footer-text { margin-top: 40px; font-size: 12px; color: var(--text-muted); line-height: 1.5; padding-bottom: 20px; }
+
+        #loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.9); display: flex; align-items: center;
+            justify-content: center; z-index: 1000; font-weight: 700; color: var(--primary-red);
+        }
     </style>
+
 
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -45,40 +135,38 @@
     <link rel="apple-touch-icon" href="padronapp1.png">
 </head>
 
+
 <body>
+    <div id="loading-overlay">Cargando base de datos...</div>
+
     <div class="container">
         <img src="padronapp1.png" alt="logo" class="logo">
-        <div class="red-banner">Padron ANR 2026 - Fernando de la Mora</div>
-        <div class="divider"></div>
+        <div class="red-banner">Padrón ANR 2026 - Fernando de la Mora</div>
         
-        <div class="form-group">
-            <label for="cedula">Cédula de Identidad:</label>
-            <input type="text" id="cedula" placeholder="0">
+        <div class="card">
+            <div class="form-group">
+                <label for="cedula">Cédula de Identidad</label>
+                <input type="number" id="cedula" placeholder="Ingrese su número de CI" inputmode="numeric">
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-orange" id="aceptar">Consultar</button>
+                <button class="btn btn-outline" id="limpiar">Limpiar</button>
+            </div>
         </div>
 
-        <div id="loading-overlay">Cargando base de datos...</div>
-
-        <div id="result-container" style="width: 100%; text-align: left;">
+        <div id="result-container" class="card" style="display: none;">
             <!-- Custom rendered results -->
         </div>
 
         <div class="candidate-info">
-            -------<br>
             ¡Gracias por tu consulta y tu confianza!<br>
-            CANDIDATO/A<br>
+            <strong>CANDIDATO/A</strong><br>
             Intendente o Concejal 2026<br>
-            Lista: ___ Opción: ___ <br>
-            --------
-        </div>
-        <div class="btn-row">
-            <button class="btn-orange" id="aceptar">Aceptar</button>
-            <button class="btn-orange" id="limpiar">Limpiar</button>
+            Lista: ___ &nbsp; Opción: ___
         </div>
 
         <div class="footer-text">
-            -------<br>
-            Padron Actualizado de Afiliados a la ANR para las Internas del 07-Junio-2026.<br>
-            -------
+            Padrón Actualizado de Afiliados a la ANR para las Internas del 07-Junio-2026.
         </div>
     </div>
 
@@ -88,7 +176,7 @@
         let isLoaded = false;
 
         const loader = document.getElementById('loading-overlay');
-        loader.style.display = 'block';
+        loader.style.display = 'flex';
         
         Papa.parse('padronapp.csv', {
             download: true,
@@ -110,42 +198,46 @@
         function renderResult(record) {
             const container = document.getElementById('result-container');
             container.innerHTML = '';
-            if (!record) return;
-            
+            if (!record) {
+                container.style.display = 'none';
+                return;
+            }
+            container.style.display = 'block';
+
             container.innerHTML = `
                 <div class="result-full">
-                    <div class="result-label">NOMBRE COMPLETO</div>
+                    <div class="result-label">Nombre Completo</div>
                     <div class="result-value">${record.nombre} ${record.apellido}</div>
                 </div>
                 <div class="result-full">
-                    <div class="result-label">LOCAL DE VOTACIÓN</div>
+                    <div class="result-label">Local de Votación</div>
                     <div class="result-value">${record.local_votacion}</div>
                 </div>
-                <div class="grid-row-2">
+                <div class="grid-row">
                     <div class="result-item">
-                        <div class="result-label">MESA</div>
+                        <div class="result-label">Mesa</div>
                         <div class="result-value">${record.mesa}</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-label">ORDEN</div>
+                        <div class="result-label">Orden</div>
                         <div class="result-value">${record.orden}</div>
                     </div>
                 </div>
                 <div class="result-full">
-                    <div class="result-label">DIRECCIÓN</div>
+                    <div class="result-label">Dirección</div>
                     <div class="result-value">${record.direccion}</div>
                 </div>
                 <div class="grid-row-3">
                     <div class="grid-col">
-                        <div class="grid-label">NACIMIENTO</div>
+                        <div class="grid-label">Nacimiento</div>
                         <div class="grid-value">${record.fecha_nacimiento}</div>
                     </div>
                     <div class="grid-col">
-                        <div class="grid-label">AFILIACIÓN</div>
+                        <div class="grid-label">Afiliación</div>
                         <div class="grid-value">${record.fecha_afiliacion}</div>
                     </div>
                     <div class="grid-col">
-                        <div class="grid-label">EDAD</div>
+                        <div class="grid-label">Edad</div>
                         <div class="grid-value">${record.edad}</div>
                     </div>
                 </div>
@@ -173,8 +265,7 @@
 
         document.getElementById('limpiar').addEventListener('click', () => {
             document.getElementById('cedula').value = '';
-            document.getElementById('result-container').innerHTML = '';
-            currentRecord = null;
+            renderResult(null);
         });
 
         if ('serviceWorker' in navigator) {
