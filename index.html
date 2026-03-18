@@ -34,7 +34,33 @@
         .btn-orange { background-color: #ff8c33; color: white; border: none; padding: 14px; border-radius: 30px; font-size: 20px; cursor: pointer; flex: 1; min-width: 120px; text-align: center; text-decoration: none; }
 
         #loading-overlay { display: none; color: #d10000; font-weight: bold; margin: 15px 0; font-size: 18px; }
-        .candidate-info { margin: 20px 0; font-size: 16px; color: #000; font-weight: 500; }
+.candidate-ballot {
+            border: 2px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin: 25px auto;
+        }
+        .ballot-header {
+            background: #333;
+            color: white;
+            margin: 0;
+            padding: 8px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        .ballot-main { padding: 20px; text-align: center; }
+        .ballot-name { margin: 0 0 15px 0; font-size: 22px; color: #000; font-weight: 900; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .ballot-numbers { display: flex; justify-content: center; gap: 40px; }
+        .number-box { display: flex; flex-direction: column; }
+        .number-box .label { font-size: 11px; color: #888; font-weight: bold; }
+        .number-box .value { font-size: 32px; color: #d10000; font-weight: bold; }
+        .ballot-footer { background: #f9f9f9; margin: 0; padding: 12px; font-size: 12px; color: #666; font-style: italic; border-top: 1px solid #eee; text-align: center; }
         .footer-text { margin-top: 30px; font-size: 11px; color: #555; }
     </style>
 
@@ -62,12 +88,22 @@
             <!-- Custom rendered results -->
         </div>
 
-        <div class="candidate-info">
-            -------<br>
-            ¡Gracias por tu consulta y tu confianza!<br>
-            CANDIDATO/A - Intendente o Concejal 2026<br>
-            Lista: ___ Opción: ___<br>
-            --------
+<div class="candidate-ballot">
+            <p class="ballot-header">TU VOTO PARA INTENDENTE O CONCEJAL</p>
+            <div class="ballot-main">
+                <h3 class="ballot-name">NOMBRE DEL CANDIDATO</h3>
+                <div class="ballot-numbers">
+                    <div class="number-box">
+                        <span class="label">LISTA</span>
+                        <span class="value">123</span>
+                    </div>
+                    <div class="number-box">
+                        <span class="label">OPCIÓN</span>
+                        <span class="value">45</span>
+                    </div>
+                </div>
+            </div>
+            <p class="ballot-footer">¡Gracias por tu consulta y tu confianza!</p>
         </div>
         <div class="btn-row">
             <button class="btn-orange" id="aceptar">Aceptar</button>
