@@ -231,13 +231,10 @@
             resultContainer.style.display = 'block';
             
             resultContainer.innerHTML = `
-                <div class="result-full">
-                    <div class="result-label">Cédula de Identidad</div>
-                    <div class="result-value">${record.cedula}</div>
-                </div>
+
                 <div class="result-full">
                     <div class="result-label">Nombre Completo</div>
-                    <div class="result-value">${record.nombre} ${record.apellido}</div>
+                    <div class="result-value">${record.cedula} - ${record.nombre} ${record.apellido}</div>
                 </div>
                 <div class="result-full">
                     <div class="result-label">Local de Votación</div>
