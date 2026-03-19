@@ -143,12 +143,12 @@
         <img src="padronapp1.png" alt="logo" class="logo">
         <div class="red-banner">Padrón ANR 2026 - Fernando de la Mora</div>
         
-        <div class="card">
+        <div id="search-card" class="card">
             <div class="form-group">
                 <label for="cedula">Cédula de Identidad</label>
                 <input type="number" id="cedula" placeholder="Ingrese su número de CI" inputmode="numeric">
             </div>
-            <div class="btn-row">
+            <div id="search-btns" class="btn-row">
                 <button class="btn btn-orange" id="aceptar">Consultar</button>
                 <button class="btn btn-outline" id="limpiar">Limpiar</button>
             </div>
@@ -176,6 +176,13 @@
         let isLoaded = false;
 
         const loader = document.getElementById('loading-overlay');
+        const searchCard = document.getElementById('search-card');
+        const searchBtns = document.getElementById('search-btns');
+        const cedulaInput = document.getElementById('cedula');
+        const containerDiv = document.querySelector('.container');
+        const redBanner = document.querySelector('.red-banner');
+        const resultContainer = document.getElementById('result-container');
+
         loader.style.display = 'flex';
         
         Papa.parse('padronapp.csv', {
@@ -195,16 +202,39 @@
             }
         });
 
+        function toggleSearchState(isMinimized) {
+            if (isMinimized) {
+                containerDiv.appendChild(searchCard);
+                searchBtns.style.display = 'none';
+                searchCard.style.marginTop = '20px';
+                searchCard.style.padding = '16px';
+            } else {
+                redBanner.insertAdjacentElement('afterend', searchCard);
+                searchBtns.style.display = 'flex';
+                searchCard.style.marginTop = '0';
+                searchCard.style.padding = '24px';
+            }
+        }
+
+        cedulaInput.addEventListener('focus', () => {
+            if (currentRecord && searchBtns.style.display === 'none') {
+                searchBtns.style.display = 'flex';
+            }
+        });
+
         function renderResult(record) {
-            const container = document.getElementById('result-container');
-            container.innerHTML = '';
+            resultContainer.innerHTML = '';
             if (!record) {
-                container.style.display = 'none';
+                resultContainer.style.display = 'none';
                 return;
             }
-            container.style.display = 'block';
+            resultContainer.style.display = 'block';
 
-            container.innerHTML = `
+            resultContainer.innerHTML = `
+                <div class="result-full">
+                    <div class="result-label">Cédula de Identidad</div>
+                    <div class="result-value">${record.cedula}</div>
+                </div>
                 <div class="result-full">
                     <div class="result-label">Nombre Completo</div>
                     <div class="result-value">${record.nombre} ${record.apellido}</div>
@@ -249,7 +279,7 @@
                 alert('La base de datos aún se está cargando.');
                 return;
             }
-            const val = document.getElementById('cedula').value.trim();
+            const val = cedulaInput.value.trim();
             if (!val) {
                 alert('Por favor, ingrese un número de cédula.');
                 return;
@@ -257,15 +287,20 @@
             currentRecord = window.csvData.find(r => r.cedula === val);
             if (currentRecord) {
                 renderResult(currentRecord);
+                toggleSearchState(true);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 alert('El número de cédula no se encuentra en el padrón.');
                 renderResult(null);
+                toggleSearchState(false);
             }
         });
 
         document.getElementById('limpiar').addEventListener('click', () => {
-            document.getElementById('cedula').value = '';
+            cedulaInput.value = '';
+            currentRecord = null;
             renderResult(null);
+            toggleSearchState(false);
         });
 
         if ('serviceWorker' in navigator) {
